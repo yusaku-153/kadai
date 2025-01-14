@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>墨田区観光マップ</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 地図の高さを設定 */
+        #map {
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        /* グラフを中央寄せにする */
+        canvas {
+            margin: 0 auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>墨田区観光マップ</h1>
+
+    <!-- 地図表示セクション -->
+    <h2>1. 地図の表示 (Leaflet.js)</h2>
+    <div id="map"></div>
+    <script>
+        // Leaflet.jsを使って地図を初期化
+        var map = L.map('map').setView([35.70494, 139.79908], 14); 
+
+        // OpenStreetMapのタイルレイヤーを追加
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // マーカーを地図上に追加
+        var marker = L.marker([35.7100069, 139.8108103]).addTo(map);
+        marker.bindPopup("東京スカイツリー").openPopup(); // ポップアップメッセージを設定
+	
+	var marker = L.marker([35.7111434, 139.7963807]).addTo(map);
+        marker.bindPopup("雷門").openPopup();
+	
+	var marker = L.marker([35.69691031, 139.7935147]).addTo(map);
+        marker.bindPopup("両国国技館").openPopup();
+
+        // ポリゴンを地図上に追加
+        var polygon = L.polygon([
+            [35.7100069, 139.8108103],
+            [35.7111434, 139.7963807],
+            [35.69691031, 139.7935147]
+        ]).addTo(map);
+        polygon.bindPopup("ポリゴンのエリア"); // ポリゴンのポップアップメッセージ
+    </script>
+
+    <!-- グラフ表示セクション -->
+    <h2>2. グラフの表示 (Chart.js)</h2>
+    <!-- 棒グラフ -->
+    <canvas id="barChart" width="400" height="200"></canvas>
+    <!-- 折れ線グラフ -->
+    <canvas id="lineChart" width="400" height="200"></canvas>
+    <!-- 円グラフ -->
+    <canvas id="pieChart" width="400" height="200"></canvas>
+
+    <script>
+        // 棒グラフの描画
+        var ctxBar = document.getElementById('barChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar', // グラフの種類を棒グラフに指定
+            data: {
+                labels: ['東京スカイツリー', '雷門', '両国国技館'], // x軸のラベル
+                datasets: [{
+                    label: '1日の観光客数（仮）', // データセットのラベル
+                    data: [5000, 2500, 1000], // 各バーの値
+                    backgroundColor: ['red', 'blue', 'green'] // 各バーの色
+                }]
+            }
+        });
+
+        // 折れ線グラフの描画
+        var ctxLine = document.getElementById('lineChart').getContext('2d');
+        new Chart(ctxLine, {
+            type: 'line', // グラフの種類を折れ線グラフに指定
+            data: {
+                labels: ['春', '夏', '秋', '冬'], // x軸のラベル
+                datasets: [{
+                    label: '季節ごとの観光客数（仮）', // データセットのラベル
+                    data: [8800, 9000, 8500, 7000], // 各データ点の値
+                    borderColor: 'black', // 線の色
+                    fill: false // 塗りつぶしを無効化
+                }]
+            }
+        });
+
+        // 円グラフの描画
+        var ctxPie = document.getElementById('pieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie', // グラフの種類を円グラフに指定
+            data: {
+                labels: ['東京スカイツリー', '雷門', '両国国技館'], // セグメントのラベル
+                datasets: [{
+                    data: [5000, 2500, 1000], // 各セグメントの値
+                    backgroundColor: ['red', 'blue', 'green'] // 各セグメントの色
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
