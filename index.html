@@ -35,16 +35,18 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // マーカーを地図上に追加
-        var marker = L.marker([35.7100069, 139.8108103]).addTo(map);
-        marker.bindPopup("東京スカイツリー").openPopup(); // ポップアップメッセージを設定
-	
-	var marker = L.marker([35.7111434, 139.7963807]).addTo(map);
-        marker.bindPopup("雷門").openPopup();
-	
-	var marker = L.marker([35.69691031, 139.7935147]).addTo(map);
-        marker.bindPopup("両国国技館").openPopup();
+ // markerdataを配列で定義する 
+        var markerdata = [
+            {name: "東京スカイツリー", lat: 35.7100069, lng: 139.8108103},
+            {name: "雷門", lat: 35.7111434, lng: 139.7963807},
+            {name: "両国国技館", lat: 35.69691031, lng: 139.7935147}
+        ];
 
+        // markerdataを使ってマーカーとポップアップを追加する
+        for (var i = 0; i < markerdata.length; i++) {
+            var marker = L.marker([markerdata[i].lat, markerdata[i].lng]).addTo(map);
+            marker.bindPopup(markerdata[i].name).openPopup();
+        }
         // ポリゴンを地図上に追加
         var polygon = L.polygon([
             [35.7100069, 139.8108103],
